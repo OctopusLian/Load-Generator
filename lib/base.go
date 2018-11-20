@@ -14,8 +14,8 @@ type RawReq struct {
 type RawResp struct {
 	ID     int64
 	Resp   []byte
-	Err    error
-	Elapse time.Duration
+	Err    error  //体现在载荷处理过程中发生的错误，如果没有错误，返回nil
+	Elapse time.Duration  //表示这个过程的耗时
 }
 
 // RetCode 表示结果代码的类型。

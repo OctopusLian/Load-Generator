@@ -9,7 +9,8 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	"Load-Generator/helper/log"
+	"helper/log"
+	
 )
 
 // 日志记录器。
@@ -17,15 +18,15 @@ var logger = log.DLogger()
 
 // ServerReq 表示服务器请求的结构。
 type ServerReq struct {
-	ID       int64
-	Operands []int
-	Operator string
+	ID       int64  //唯一标识一个请求
+	Operands []int  //多个运算数
+	Operator string  //一个运算符
 }
 
 // ServerResp 表示服务器响应的结构。
 type ServerResp struct {
-	ID      int64
-	Formula string
+	ID      int64  //唯一标识一个响应
+	Formula string  //请求要求的算术运算的结果值
 	Result  int
 	Err     error
 }

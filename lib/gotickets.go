@@ -6,6 +6,8 @@ import (
 )
 
 // GoTickets 表示Goroutine票池的接口。
+//“票”-抽象概念，它相当于程序为了启用一个goroutine而必须持有的令牌
+//goroutine票池只负责增减票的数量，并以此真实地体现出正在运行的专用goroutine的数量
 type GoTickets interface {
 	// 拿走一张票。
 	Take()
@@ -23,7 +25,7 @@ type GoTickets interface {
 type myGoTickets struct {
 	total    uint32        // 票的总数。
 	ticketCh chan struct{} // 票的容器。
-	active   bool          // 票池是否已被激活。
+	active   bool          // 票池是否已被激活（正确的初始化）。
 }
 
 // NewGoTickets 会新建一个Goroutine票池。
@@ -37,6 +39,7 @@ func NewGoTickets(total uint32) (GoTickets, error) {
 	return &gt, nil
 }
 
+//对lib.myGoTickets类型值的初始化工作都由它的包级私有的指针方法init来进行
 func (gt *myGoTickets) init(total uint32) bool {
 	if gt.active {
 		return false
@@ -44,7 +47,7 @@ func (gt *myGoTickets) init(total uint32) bool {
 	if total == 0 {
 		return false
 	}
-	ch := make(chan struct{}, total)
+	ch := make(chan struct{}, total)  //初始化一个元素类型为struct{}的缓冲通道ch
 	n := int(total)
 	for i := 0; i < n; i++ {
 		ch <- struct{}{}

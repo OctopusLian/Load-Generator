@@ -38,6 +38,7 @@ func NewGenerator(pset ParamSet) (lib.Generator, error) {
 	if err := pset.Check(); err != nil {
 		return nil, err
 	}
+	//使用复合字面量对其中的6个字段进行赋值，然后将该值的指针赋给变量gen
 	gen := &myGenerator{
 		caller:     pset.Caller,
 		timeoutNS:  pset.TimeoutNS,
@@ -193,6 +194,7 @@ func (gen *myGenerator) prepareToStop(ctxError error) {
 
 // genLoad 会产生载荷并向承受方发送。
 func (gen *myGenerator) genLoad(throttle <-chan time.Time) {
+	//周期性地向被测软件发送载荷，周期长短由节流阀throttle控制
 	for {
 		select {
 		case <-gen.ctx.Done():
@@ -201,6 +203,7 @@ func (gen *myGenerator) genLoad(throttle <-chan time.Time) {
 		default:
 		}
 		gen.asyncCall()
+		//如果lps字段的值大于0，就表示节流阀是有效并需要使用的
 		if gen.lps > 0 {
 			select {
 			case <-throttle:
@@ -233,7 +236,7 @@ func (gen *myGenerator) Start() bool {
 	}
 
 	// 初始化上下文和取消函数。
-	gen.ctx, gen.cancelFunc = context.WithTimeout(
+	gen.ctx, gen.cancelFunc = context.WithTimeout(  //生成一个上下文和一个取消函数
 		context.Background(), gen.durationNS)
 
 	// 初始化调用计数。
