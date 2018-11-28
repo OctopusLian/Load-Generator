@@ -14,8 +14,8 @@ var printDetail = false
 func TestStart(t *testing.T) {
 
 	// 初始化服务器。
-	server := helper.NewTCPServer()
-	defer server.Close()
+	server := helper.NewTCPServer() //创建并初始化一个TCP服务器（被测软件）
+	defer server.Close()            //保证在该功能测试方法结束之前会关闭该TCP服务器
 	serverAddr := "127.0.0.1:8080"
 	t.Logf("Startup TCP server(%s)...\n", serverAddr)
 	err := server.Listen(serverAddr)
@@ -27,10 +27,10 @@ func TestStart(t *testing.T) {
 	// 初始化载荷发生器。
 	pset := ParamSet{
 		Caller:     helper.NewTCPComm(serverAddr),
-		TimeoutNS:  50 * time.Millisecond,
-		LPS:        uint32(1000),
-		DurationNS: 10 * time.Second,
-		ResultCh:   make(chan *loadgenlib.CallResult, 50),
+		TimeoutNS:  50 * time.Millisecond,                 //响应超时时间为50ms
+		LPS:        uint32(1000),                          //每秒载荷量为1000
+		DurationNS: 10 * time.Second,                      //负载持续时间为10s
+		ResultCh:   make(chan *loadgenlib.CallResult, 50), //调用结果通道的容量为50
 	}
 	t.Logf("Initialize load generator (timeoutNS=%v, lps=%d, durationNS=%v)...",
 		pset.TimeoutNS, pset.LPS, pset.DurationNS)
@@ -47,7 +47,7 @@ func TestStart(t *testing.T) {
 
 	// 显示结果。
 	countMap := make(map[loadgenlib.RetCode]int)
-	for r := range pset.ResultCh {
+	for r := range pset.ResultCh { //不断尝试从调用结果通道接收结果，并按照响应代码分类对响应计数
 		countMap[r.Code] = countMap[r.Code] + 1
 		if printDetail {
 			t.Logf("Result: ID=%d, Code=%d, Msg=%s, Elapse=%v.\n",
@@ -66,7 +66,7 @@ func TestStart(t *testing.T) {
 
 	t.Logf("Total: %d.\n", total)
 	successCount := countMap[loadgenlib.RET_CODE_SUCCESS]
-	tps := float64(successCount) / float64(pset.DurationNS/1e9)
+	tps := float64(successCount) / float64(pset.DurationNS/1e9) //被测软件平均每秒有效的处理（响应）载荷的数量
 	t.Logf("Loads per second: %d; Treatments per second: %f.\n", pset.LPS, tps)
 }
 

@@ -21,7 +21,7 @@ var operators = []string{"+", "-", "*", "/"}
 
 // TCPComm 表示TCP通讯器的结构。
 type TCPComm struct {
-	addr string
+	addr string  //存储被测软件的网络地址
 }
 
 // NewTCPComm 会新建一个TCP通讯器。
