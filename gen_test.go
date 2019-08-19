@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	loadgenlib "Load-Generator/lib"
-	helper "Load-Generator/testhelper"
+	loadgenlib "github.com/programming-book-practice/loadgen/lib"
+	helper "github.com/programming-book-practice/loadgen/testhelper"
 )
 
 // printDetail 代表是否打印详细结果。

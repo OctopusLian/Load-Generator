@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	"helper/log"
+	"github.com/programming-book-practice/loadgen/helper/log"
 	
 )
 

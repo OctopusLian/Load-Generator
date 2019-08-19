@@ -9,7 +9,7 @@ import (
 	"net"
 	"time"
 
-	loadgenlib "Load-Generator/lib"
+	loadgenlib "github.com/programming-book-practice/loadgen/lib"
 )
 
 const (

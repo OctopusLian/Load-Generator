@@ -9,8 +9,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"Load-Generator/lib"
-	"helper/log"
+	"github.com/programming-book-practice/loadgen/lib"
+	"github.com/programming-book-practice/loadgen/helper/log"
 )
 
 // 日志记录器。
